@@ -1,4 +1,6 @@
 const userModel = require("./../../db/models/user");
+const taskModel = require("./../../db/models/task");
+
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -43,10 +45,10 @@ const login = (req, res) => {
             role: result.role,
           };
           const options = {
-            expiresIn: "60m",
+            expiresIn: "600m",
           };
           if (hashedPassword) {
-            const token = jwt.sign(payload, secret, options);
+            const token = jwt.json(payload, secret, options);
             res.status(200).json({ result, token });
           } else {
             res.status(400).send("invalid email or password");
@@ -55,7 +57,7 @@ const login = (req, res) => {
           res.status(400).send("invalid email or password");
         }
       } else {
-        res.status(404).json("this email not exist!");
+        res.status(404).send("this email not exist!");
       }
     })
     .catch((err) => {
@@ -67,7 +69,7 @@ const users = (req, res) => {
   userModel
     .find({})
     .then((result) => {
-      res.status(200).send(result);
+      res.status(200).json(result);
     })
     .catch((err) => {
       res.status(400).send(err);
@@ -79,12 +81,24 @@ const deleteUser = (req, res) => {
   userModel
     .findByIdAndDelete(id)
     .then((result) => {
-      // console.log(result);
-      res.status(200).send(result);
+      if (result) {
+        // console.log(result._id);
+        // use user id to delete user data and tasks
+        taskModel
+          .deleteMany({ user: result._id })
+          .then((result) => {
+            // console.log(result);
+            res.status(200).json(result);
+          })
+          .catch((error) => {
+            res.status(400).send(error);
+          });
+      } else {
+        res.status(400).send("no user with this id");
+      }
     })
-    .catch((err) => {
-      res.status(400).send(err);
+    .catch((error) => {
+      res.status(400).send(error);
     });
 };
-
 module.exports = { register, login, users, deleteUser };
