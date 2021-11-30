@@ -42,6 +42,9 @@ const login = (req, res) => {
           const payload = {
             role: result.role,
           };
+          // const options = {
+          //   expiresIn = "60s"
+          // };
           if (hashedPassword) {
             const token = jwt.sign(payload, secret);
             res.status(200).json({ result, token });
@@ -60,8 +63,8 @@ const login = (req, res) => {
     });
 };
 
-const users = (req, res)=>{
-    userModel
+const users = (req, res) => {
+  userModel
     .find({})
     .then((result) => {
       res.status(200).send(result);
@@ -69,5 +72,19 @@ const users = (req, res)=>{
     .catch((err) => {
       res.status(400).send(err);
     });
-}
-module.exports = { register, login, users };
+};
+
+const deleteUser = (req, res) => {
+  const { id } = req.params;
+  userModel
+    .findByIdAndDelete(id)
+    .then((result) => {
+      // console.log(result);
+      res.status(200).send(result);
+    })
+    .catch((err) => {
+      res.status(400).send(err);
+    });
+};
+
+module.exports = { register, login, users, deleteUser };
