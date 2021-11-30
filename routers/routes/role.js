@@ -1,10 +1,11 @@
 const express = require("express");
 const roleRouter = express.Router();
-// const authentication = require("./../middleware/authentication")
 
 const { newRole, roles } = require("../controllers/role");
+const authentication = require("./../middleware/authentication");
+// const authorization = require("./../middleware/authorization");
 
-roleRouter.post("/newRole", newRole);
-roleRouter.get("/roles", roles);
+roleRouter.post("/newRole", authentication, newRole);
+roleRouter.get("/roles", authentication, roles);
 
 module.exports = roleRouter;

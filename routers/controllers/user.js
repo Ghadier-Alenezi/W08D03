@@ -42,11 +42,11 @@ const login = (req, res) => {
           const payload = {
             role: result.role,
           };
-          // const options = {
-          //   expiresIn = "60s"
-          // };
+          const options = {
+            expiresIn: "60m",
+          };
           if (hashedPassword) {
-            const token = jwt.sign(payload, secret);
+            const token = jwt.sign(payload, secret, options);
             res.status(200).json({ result, token });
           } else {
             res.status(400).send("invalid email or password");
