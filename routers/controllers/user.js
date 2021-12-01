@@ -48,7 +48,7 @@ const login = (req, res) => {
             expiresIn: "600m",
           };
           if (hashedPassword) {
-            const token = jwt.json(payload, secret, options);
+            const token = jwt.sign(payload, secret, options);
             res.status(200).json({ result, token });
           } else {
             res.status(400).send("invalid email or password");
