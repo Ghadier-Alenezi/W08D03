@@ -67,7 +67,7 @@ const login = (req, res) => {
 
 const users = (req, res) => {
   userModel
-    .find({})
+    .find()
     .then((result) => {
       res.status(200).json(result);
     })

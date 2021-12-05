@@ -9,7 +9,7 @@ const authorization = require("./../middleware/authorization");
 userRouter.post("/register", register);
 userRouter.post("/login", login);
 
-// only admin can get all users and delete a user
+// only admin can get all users and delete any user
 userRouter.get("/users", authentication, authorization, users);
 userRouter.delete("/user/:id", authentication, authorization, deleteUser);
 

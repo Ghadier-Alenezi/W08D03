@@ -21,7 +21,7 @@ const creatTask = (req, res) => {
 // get all tasks
 const tasks = (req, res) => {
   taskModel
-    .find({})
+    .find()
     .then((result) => {
       // console.log(result);
       const tasks = result.filter((item) => {
@@ -37,7 +37,7 @@ const tasks = (req, res) => {
 // get deleted task
 const getDeletedTasks = (req, res) => {
   taskModel
-    .find({})
+    .find()
     .then((result) => {
       // console.log(result);
       const tasks = result.filter((item) => {
