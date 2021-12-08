@@ -21,16 +21,13 @@ const creatTask = (req, res) => {
 // get all tasks
 const tasks = (req, res) => {
   taskModel
-    .find()
+    .find({ userId: req.token.id, isCompleted: false, isDeleted: false })
     .then((result) => {
+      res.status(200).json(result);
       // console.log(result);
-      const tasks = result.filter((item) => {
-        return item.isDeleted === false;
-      });
-      res.status(200).send(tasks);
     })
     .catch((err) => {
-      res.status(400).send(err);
+      res.send(err);
     });
 };
 
@@ -39,7 +36,6 @@ const getDeletedTasks = (req, res) => {
   taskModel
     .find()
     .then((result) => {
-      // console.log(result);
       const tasks = result.filter((item) => {
         return item.isDeleted === true;
       });
@@ -56,8 +52,6 @@ const task = (req, res) => {
   taskModel
     .findById(id)
     .then((result) => {
-      // condition to return only the exist tasks
-      // console.log(result.isDeleted);
       if (result.isDeleted === false) {
         res.status(200).json(result);
       } else {
@@ -77,7 +71,6 @@ const updateTask = (req, res) => {
     .findByIdAndUpdate(id, { name })
     .exec()
     .then((result) => {
-      console.log(result);
       res.status(200).json(result);
     })
     .catch((err) => {
@@ -89,10 +82,23 @@ const updateTask = (req, res) => {
 const deleteTask = (req, res) => {
   const { id } = req.params;
   taskModel
-    .findByIdAndUpdate(id, {isDeleted: true})
+    .findByIdAndUpdate(id, { isDeleted: true })
     .exec()
     .then((result) => {
-      console.log(result);
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(400).send(err);
+    });
+};
+
+// delete task
+const deleteTaskForever = (req, res) => {
+  const { id } = req.params;
+  taskModel
+    .findByIdAndDelete(id)
+    .exec()
+    .then((result) => {
       res.status(200).json(result);
     })
     .catch((err) => {
@@ -107,4 +113,5 @@ module.exports = {
   task,
   updateTask,
   deleteTask,
+  deleteTaskForever,
 };

@@ -82,12 +82,10 @@ const deleteUser = (req, res) => {
     .findByIdAndDelete(id)
     .then((result) => {
       if (result) {
-        // console.log(result._id);
         // use user id to delete user data and tasks
         taskModel
           .deleteMany({ user: result._id })
           .then((result) => {
-            // console.log(result);
             res.status(200).json(result);
           })
           .catch((error) => {
