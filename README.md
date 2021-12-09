@@ -7,6 +7,10 @@
 ---
 * ### tasks model functios, all crud operations create a new task, read all tasks & read a task by id, update the task and soft delete a task 
 ---
+# ER diagram
+---
+# UML diagram
+---
 packages we use: 
 *  Express to build the server
 
