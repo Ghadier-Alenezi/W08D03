@@ -8,6 +8,7 @@
 * ### tasks model functios, all crud operations create a new task, read all tasks & read a task by id, update the task and soft delete a task 
 ---
 # ER diagram
+![alt text](https://github.com/Ghadier-Alenezi/W08D03/blob/main/ERD.png)
 ---
 # UML diagram
 ---
